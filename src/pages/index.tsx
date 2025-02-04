@@ -1,17 +1,11 @@
 import { Button } from '@mui/material'
-import Head from 'next/head'
-import React from 'react'
+import Layout from 'src/layout/layout'
 
 const Index = () => {
   return (
-    <>
-      <Head>
-        <title>Index page | Sammi</title>
-      </Head>
-      <div>
-        <Button variant='contained'>Index page</Button>
-      </div>
-    </>
+    <Layout>
+      <Button variant='contained'>Index page</Button>
+    </Layout>
   )
 }
 
