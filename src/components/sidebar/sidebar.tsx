@@ -7,7 +7,7 @@ import navItems from "src/config/constants"
 
 const Sidebar = () => {
   return (
-    <Box width={'30%'}>
+    <Box width={{ xs: '100%', md: '30%' }}>
       <Box position={'sticky'} top={'100px'} sx={{ transition: 'all .3 ease' }}>
         <Box border={'1px solid gray'} padding={'20px'} borderRadius={'8px'}>
           <Typography variant="h5">Latest blog</Typography>
@@ -36,7 +36,7 @@ const Sidebar = () => {
           <Typography variant="h5">Catagory</Typography>
           <Box display={'flex'} justifyContent={'start'} flexDirection={'column'} marginTop={'5px'}>
             {navItems.map(item => (
-              <Fragment>
+              <Fragment key={item.rout}>
                 <Button sx={{ width: '100%', display: 'block', textAlign: 'start', height: '50px' }} key={item.rout}>{item.title}</Button>
                 <Divider />
               </Fragment>

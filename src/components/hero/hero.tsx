@@ -21,8 +21,8 @@ const Hero = () => {
               <Image src={item.image} alt={item.title} fill objectFit='cover' />
               <Box sx={{ position: 'absolute', top: '0', left: '0', bottom: '0', right: '0', widows: '100%', height: '100%', backgroundColor: 'rgba(0,0,0,0.6)' }}></Box>
               <Box width={{ xs: '100%', sm: '70%' }} sx={{ position: 'relative', color: 'white', top: '50%', transform: 'translateY(-50%)', paddingLeft: { xs: '10px', sm: '50px' } }}>
-                <Typography variant='h2'>{item.title}</Typography>
-                <Typography variant='h5'>{item.exerpt}</Typography>
+                <Typography sx={{ fontSize: { xs: '30px', md: '60px' } }}>{item.title}</Typography>
+                <Typography sx={{ fontSize: { xs: '18px', md: '30px' }, color: 'gray' }}>{item.exerpt}</Typography>
                 <Box sx={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '15px' }}>
                   <Avatar alt={item.author.name} src={item.author.image} />
                   <Box>
