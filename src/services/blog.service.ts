@@ -1,4 +1,6 @@
 import { request, gql } from "graphql-request"
+import { BlogType } from "src/interfaces/blog.interface";
+import { CategoryType } from "src/interfaces/category.interface";
 
 const graphApi = process.env.NEXT_PUBLIC_HAYGRAPH_ENDPOINT || ''
 
@@ -11,6 +13,10 @@ export const BlogsService = {
           slug
           title
           excerpt
+          createdAt
+          image {
+            url
+          }
           auther {
             name
             avatar {
@@ -25,7 +31,44 @@ export const BlogsService = {
       }
     `;
 
-    const result = await request(graphApi, query)
-    return result
+    const result = await request<{ blogs: BlogType[] }>(graphApi, query)
+    return result.blogs
+  },
+
+  async getLastBlogs() {
+    const query = gql`
+      query MyQuery {
+        blogs(last: 2){
+          id
+          slug
+          title
+          createdAt
+          image {
+            url
+          }
+          auther {
+            name
+            avatar {
+              url
+            }
+          }
+        }
+      }
+    `
+
+    const result = await request<{ blogs: BlogType[] }>(graphApi, query)
+    return result.blogs
+  },
+  async getCategory() {
+    const query = gql`
+      query GetCategory {
+      categories {
+        label
+        slug
+      }
+    }
+    `
+    const result = await request<{ categories: CategoryType[] }>(graphApi, query)
+    return result.categories
   }
 }

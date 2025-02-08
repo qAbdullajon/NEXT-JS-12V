@@ -3,6 +3,10 @@ export interface BlogType {
   slug: string
   title: string
   excerpt: string
+  createdAt: Date
+  image: {
+    url: string
+  }
   auther: {
     name: string
     avatar: {
