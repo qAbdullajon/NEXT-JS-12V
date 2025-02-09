@@ -55,13 +55,13 @@ const Navbar = (props: Props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography onClick={() => router.push('/')} variant="h6" sx={{ flexGrow: 1, my: 2, display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+          <Typography variant="h6" sx={{ flexGrow: 1, my: 2, display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
             Sammi
             <AdjustIcon />
           </Typography>
           <Box sx={{ display: { xs: 'none', sm: 'block' } }}>
             {navItems.map((item) => (
-              <Button key={item.rout} sx={{ color: '#fff' }}>
+              <Button onClick={() => router.push(item.rout)} key={item.rout} sx={{ color: '#fff' }}>
                 {item.title}
               </Button>
             ))}
