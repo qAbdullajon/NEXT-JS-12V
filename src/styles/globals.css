@@ -1,3 +1,7 @@
+#nprogress .bar {
+	z-index: 1110 !important;
+}
+
 .clamp-text-1 {
   display: -webkit-box;
   -webkit-line-clamp: 1;

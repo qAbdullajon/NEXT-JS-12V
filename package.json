@@ -18,12 +18,14 @@
     "graphql": "^16.10.0",
     "graphql-request": "^7.1.2",
     "next": "15.1.6",
+    "nprogress": "^0.2.0",
     "react": "19.0.0",
     "react-dom": "19.0.0",
     "react-multi-carousel": "^2.8.5"
   },
   "devDependencies": {
     "@types/node": "22.13.0",
+    "@types/nprogress": "^0.2.3",
     "@types/react": "19.0.8",
     "@types/react-dom": "19.0.3",
     "eslint": "9.19.0",

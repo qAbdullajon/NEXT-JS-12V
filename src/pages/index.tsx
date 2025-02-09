@@ -4,18 +4,21 @@ import { Content, Hero, Sidebar } from 'src/components'
 import { BlogType } from 'src/interfaces/blog.interface'
 import { CategoryType } from 'src/interfaces/category.interface'
 import Layout from 'src/layout/layout'
+import SEO from 'src/layout/seo/seo'
 import { BlogsService } from 'src/services/blog.service'
 
 const Index = ({ blogs, lastBlog, categories }: HomePageProps) => {
 
   return (
-    <Layout>
-      <Hero blogs={blogs.slice(0, 3)} />
-      <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: '20px', padding: '20px' }}>
-        <Sidebar lastBlog={lastBlog} categories={categories} />
-        <Content blogs={blogs} />
-      </Box>
-    </Layout>
+    <SEO>
+      <Layout>
+        <Hero blogs={blogs.slice(0, 3)} />
+        <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: '20px', padding: '20px' }}>
+          <Sidebar lastBlog={lastBlog} categories={categories} />
+          <Content blogs={blogs} />
+        </Box>
+      </Layout>
+    </SEO>
   )
 }
 export default Index
