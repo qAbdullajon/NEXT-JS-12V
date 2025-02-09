@@ -3,8 +3,9 @@ import { Avatar, Box, Button, Divider, Typography } from "@mui/material"
 import { format } from "date-fns"
 import Image from "next/image"
 import { Fragment } from "react"
-import { SidebarProps } from "./sidebar"
 import { useRouter } from "next/router"
+import { SidebarProps } from "./sidebar.props";
+
 
 
 const Sidebar = ({ lastBlog, categories }: SidebarProps) => {
