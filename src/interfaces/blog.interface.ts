@@ -7,6 +7,9 @@ export interface BlogType {
   image: {
     url: string
   }
+  description: {
+    text: string
+  }
   auther: {
     name: string
     avatar: {

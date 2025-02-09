@@ -17,6 +17,9 @@ export const BlogsService = {
           image {
             url
           }
+          description {
+            text
+          }
           auther {
             name
             avatar {
@@ -45,6 +48,9 @@ export const BlogsService = {
           createdAt
           image {
             url
+          }
+          description {
+            text
           }
           auther {
             name
