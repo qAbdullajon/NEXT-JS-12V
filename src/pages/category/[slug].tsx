@@ -1,16 +1,16 @@
 import { Box } from '@mui/material'
 import { GetServerSideProps } from 'next'
-import { Content, Hero, Sidebar } from 'src/components'
+import React from 'react'
+import { Content, Sidebar } from 'src/components'
 import { BlogType } from 'src/interfaces/blog.interface'
 import { CategoryType } from 'src/interfaces/category.interface'
 import Layout from 'src/layout/layout'
 import { BlogsService } from 'src/services/blog.service'
 
-const Index = ({ blogs, lastBlog, categories }: HomePageProps) => {
+const CategoryPage = ({ blogs, lastBlog, categories }: CategorySlugProps) => {
 
   return (
     <Layout>
-      <Hero blogs={blogs.slice(0, 3)} />
       <Box sx={{ display: 'flex', flexDirection: { xs: 'column', md: 'row' }, gap: '20px', padding: '20px' }}>
         <Sidebar lastBlog={lastBlog} categories={categories} />
         <Content blogs={blogs} />
@@ -18,10 +18,11 @@ const Index = ({ blogs, lastBlog, categories }: HomePageProps) => {
     </Layout>
   )
 }
-export default Index
 
-export const getServerSideProps: GetServerSideProps<HomePageProps> = async () => {
-  const blogs = await BlogsService.getAllBlogs()
+export default CategoryPage
+
+export const getServerSideProps: GetServerSideProps = async ({ query }) => {
+  const blogs = await BlogsService.getCategorySlug(query.slug as string)
   const lastBlog = await BlogsService.getLastBlogs()
   const categories = await BlogsService.getCategory()
 
@@ -34,8 +35,8 @@ export const getServerSideProps: GetServerSideProps<HomePageProps> = async () =>
   }
 }
 
-interface HomePageProps {
+interface CategorySlugProps {
   blogs: BlogType[];
   lastBlog: BlogType[];
-  categories: CategoryType[]
+  categories: CategoryType[];
 }

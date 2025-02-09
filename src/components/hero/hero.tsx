@@ -5,8 +5,10 @@ import Image from 'next/image';
 import { format } from 'date-fns';
 import { HeroProps } from './hero.props';
 import { calculateEstimetedTimeToRead } from 'src/helpers/time.format';
+import { useRouter } from 'next/router';
 
 const Hero = ({ blogs }: HeroProps) => {
+  const router = useRouter()
   const responsive = {
     mobile: {
       breakpoint: { max: 4000, min: 0 },
@@ -25,7 +27,7 @@ const Hero = ({ blogs }: HeroProps) => {
               <Box width={{ xs: '100%', sm: '70%' }} sx={{ position: 'relative', color: 'white', top: '50%', transform: 'translateY(-50%)', paddingLeft: { xs: '10px', sm: '50px' } }}>
                 <Typography className='clamp-text-1' sx={{ fontSize: { xs: '30px', md: '60px' } }}>{item.title}</Typography>
                 <Typography className='clamp-text-2' sx={{ fontSize: { xs: '18px', md: '30px' }, color: 'gray' }}>{item.excerpt}</Typography>
-                <Box sx={{ marginTop: '20px', display: 'flex', alignItems: 'center', gap: '15px' }}>
+                <Box width={'300px'} onClick={() => router.push(`/blog/${item.slug}`)} sx={{ cursor: 'pointer', marginTop: '20px', display: 'flex', alignItems: 'center', gap: '15px' }}>
                   <Avatar alt={item.auther.name} src={item.auther.avatar.url} />
                   <Box>
                     <Typography>{item.auther.name}</Typography>

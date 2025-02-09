@@ -76,5 +76,67 @@ export const BlogsService = {
     `
     const result = await request<{ categories: CategoryType[] }>(graphApi, query)
     return result.categories
+  },
+  async getDetailBlog(slug: string) {
+    const query = gql`
+      query DetailedBlog($slug: String!) {
+        blog(where: {slug: $slug}) {
+          id
+          slug
+          title
+          excerpt
+          createdAt
+          image {
+            url
+          }
+          description {
+            text
+            html
+          }
+          auther {
+            name
+            avatar {
+              url
+            }
+          }
+        }
+      }
+    `
+
+    const result = await request<{ blog: BlogType }>(graphApi, query, { slug })
+    return result.blog
+  },
+
+  async getCategorySlug(slug: string) {
+    const query = gql`
+      query GetCategory($slug: String!) {
+        blogs(where: {category: {slug: $slug}, documentInStages_some: {}}) {
+          id
+          slug
+          title
+          excerpt
+          createdAt
+          image {
+            url
+          }
+          description {
+            text
+          }
+          auther {
+            name
+            avatar {
+              url
+            }
+          }
+          category {
+            label
+            slug
+          }
+        }
+      }
+    `
+
+    const result = await request<{ blogs: BlogType[] }>(graphApi, query, { slug })
+    return result.blogs
   }
 }

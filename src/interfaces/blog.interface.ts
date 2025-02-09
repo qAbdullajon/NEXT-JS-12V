@@ -9,6 +9,7 @@ export interface BlogType {
   }
   description: {
     text: string
+    html: string
   }
   auther: {
     name: string

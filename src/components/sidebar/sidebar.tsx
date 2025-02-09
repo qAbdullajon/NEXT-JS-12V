@@ -1,11 +1,14 @@
+import React from "react";
 import { Avatar, Box, Button, Divider, Typography } from "@mui/material"
 import { format } from "date-fns"
 import Image from "next/image"
 import { Fragment } from "react"
 import { SidebarProps } from "./sidebar"
+import { useRouter } from "next/router"
 
 
 const Sidebar = ({ lastBlog, categories }: SidebarProps) => {
+  const router = useRouter()
   return (
     <Box width={{ xs: '100%', md: '30%' }}>
       <Box position={'sticky'} top={'100px'} sx={{ transition: 'all .3 ease' }}>
@@ -13,7 +16,7 @@ const Sidebar = ({ lastBlog, categories }: SidebarProps) => {
           <Typography variant="h5">Latest blog</Typography>
           <Box marginTop={'10px'} display={'flex'} flexDirection={'column'} gap={'20px'}>
             {lastBlog.map(item => (
-              <Box key={item.id}>
+              <Box onClick={() => router.push(`/blog/${item.slug}`)} sx={{ cursor: 'pointer' }} key={item.id}>
                 <Box display={'flex'} gap={'20px'} alignItems={'center'} >
                   <Image src={item.image.url} alt={item.title} width={100} priority height={100} style={{ objectFit: 'cover', borderRadius: '8px' }} />
                   <Box display={'flex'} flexDirection={'column'} gap={'8px'}>
@@ -37,7 +40,7 @@ const Sidebar = ({ lastBlog, categories }: SidebarProps) => {
           <Box display={'flex'} justifyContent={'start'} flexDirection={'column'} marginTop={'5px'}>
             {categories.map(item => (
               <Fragment key={item.slug}>
-                <Button sx={{ width: '100%', display: 'block', textAlign: 'start', height: '50px' }}>{item.label}</Button>
+                <Button onClick={() => router.push(`/category/${item.slug}`)} sx={{ width: '100%', display: 'block', textAlign: 'start', height: '50px' }}>{item.label}</Button>
                 <Divider />
               </Fragment>
             ))}
@@ -49,24 +52,3 @@ const Sidebar = ({ lastBlog, categories }: SidebarProps) => {
 }
 
 export default Sidebar
-
-const data = [
-  {
-    image: 'https://media.graphassets.com/MxJZhmooRRuudoErkQ38',
-    title: 'Technical SEO with Hygraph',
-    exerpt: 'Get started with your SEO implementation when using a Headless CMS',
-    author: {
-      name: 'Samar Badriddinov',
-      image: 'https://media.graphassets.com/DkfNqQNGRz2F4UFntKQx',
-    },
-  },
-  {
-    image: 'https://media.graphassets.com/bh3K2NNtTHCN260Xfq9h',
-    title: 'Union Types and Sortable Relations with Hygraph',
-    exerpt: 'Learn more about Polymorphic Relations and Sortable Relations with Hygraph',
-    author: {
-      name: 'Samar Badriddinov',
-      image: 'https://media.graphassets.com/DkfNqQNGRz2F4UFntKQx',
-    },
-  },
-];

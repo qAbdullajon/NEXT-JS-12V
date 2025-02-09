@@ -4,6 +4,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import AdjustIcon from '@mui/icons-material/Adjust';
 import navItems from "src/config/constants";
+import { useRouter } from "next/router";
 
 interface Props {
   window?: () => Window;
@@ -16,11 +17,12 @@ const Navbar = (props: Props) => {
   const handleDrawerToggle = () => {
     setMobileOpen((prevState) => !prevState);
   };
+  const router = useRouter()
 
   const drawer = (
     <Box onClick={handleDrawerToggle} sx={{ textAlign: 'center' }}>
       <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', paddingX: '15px' }}>
-        <Typography variant="h6" sx={{ my: 2, display: "flex", alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+        <Typography onClick={() => router.push('/')} variant="h6" sx={{ my: 2, display: "flex", alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
           Sammi
           <AdjustIcon />
         </Typography>
@@ -53,7 +55,7 @@ const Navbar = (props: Props) => {
           >
             <MenuIcon />
           </IconButton>
-          <Typography variant="h6" sx={{ flexGrow: 1, my: 2, display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
+          <Typography onClick={() => router.push('/')} variant="h6" sx={{ flexGrow: 1, my: 2, display: { xs: 'none', sm: 'flex' }, alignItems: 'center', gap: '5px', cursor: 'pointer' }}>
             Sammi
             <AdjustIcon />
           </Typography>
