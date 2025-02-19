@@ -93,7 +93,7 @@ const ProductModal = () => {
                       <p>{product?.rating.rate}</p>
                       {product?.rating.rate && (
                         <div className="flex items-center ml-2 pb-[1px] mr-6">
-                          <ReactStars value={product?.rating.rate} edit={true} />
+                          <ReactStars value={product?.rating.rate} edit={false} />
                         </div>
                       )}
                       <p className="text-blue-600 hover:underline cursor-pointer text-sm">

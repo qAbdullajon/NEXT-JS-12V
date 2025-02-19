@@ -1,9 +1,11 @@
+"use client"
+
 import Image from "next/image"
 import Link from "next/link"
+import { useRouter } from "next/navigation"
 
 const Navbar = () => {
-
-
+  const router = useRouter()
   return (
     <header className="flex justify-between px-4 md:px-12 py-2 items-center fixed top-0 bg-white w-full z-50 shadow">
       <Link href={'/'} className="flex gap-3 items-center">
@@ -15,8 +17,7 @@ const Navbar = () => {
           <Link href={'/'} className="mr-5 hover:text-gray-900 text-black">Bosh Sahifa</Link>
           <Link href={'/products'} className="mr-5 hover:text-gray-900 text-black">All product</Link>
         </nav>
-        <button className="button bg-blue-600 border text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">Log in</button>
-        <button className="button bg-transparent text-black border-blue-600 hover:text-white hover:bg-blue-600">Sign up</button>
+        <button onClick={() => router.push('/shopping-cart')} className="button bg-blue-600 border text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">My bag</button>
       </div>
     </header>
   )
