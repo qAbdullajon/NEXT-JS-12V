@@ -5,8 +5,9 @@ import { Dialog } from "@headlessui/react"
 import { useEffect, useState } from "react"
 import { useParams, useRouter } from "next/navigation"
 import CustomImage from "@/components/image"
-import { StarIcon as StarIconOutline } from '@heroicons/react/24/outline';
-import { StarIcon } from '@heroicons/react/24/solid';
+import ReactStars from 'react-stars'
+import Notify from "@/components/toastify"
+import 'react-toastify/dist/ReactToastify.css';
 
 const ProductModal = () => {
   const [loading, setLoading] = useState(false)
@@ -27,6 +28,31 @@ const ProductModal = () => {
 
     getData()
   }, [id])
+
+  function addToBag() {
+    const products: ProductType[] = JSON.parse(localStorage.getItem('carts') as string) || []
+    const isExistProduct = products.find(c => c.id === product?.id)
+    if (isExistProduct) {
+      const updateProducts = products.map(c => {
+        if (c.id === product?.id) {
+          console.log({
+            ...c, quantity: c.quantity + 1
+          });
+
+          return {
+            ...c, quantity: c.quantity + 1
+          }
+        }
+        return c
+      })
+
+      localStorage.setItem('carts', JSON.stringify(updateProducts))
+    } else {
+      const data = [...products, { ...product, quantity: 1 }]
+      localStorage.setItem("carts", JSON.stringify(data))
+    }
+    Notify("Product added to your bag!!")
+  }
 
   function onClose() {
     setIsOpen(false)
@@ -67,28 +93,7 @@ const ProductModal = () => {
                       <p>{product?.rating.rate}</p>
                       {product?.rating.rate && (
                         <div className="flex items-center ml-2 pb-[1px] mr-6">
-                          {Array.from(
-                            {
-                              length: Math.floor(product?.rating.rate)
-                            },
-                            (_, i) => (
-                              <StarIcon
-                                key={i}
-                                className='h-4 w-4 text-yellow-500'
-                              />
-                            )
-                          )}
-                          {Array.from(
-                            {
-                              length: 5 - Math.floor(product?.rating.rate)
-                            },
-                            (_, i) => (
-                              <StarIconOutline
-                                key={i}
-                                className='h-4 w-4 text-yellow-500'
-                              />
-                            )
-                          )}
+                          <ReactStars value={product?.rating.rate} edit={true} />
                         </div>
                       )}
                       <p className="text-blue-600 hover:underline cursor-pointer text-sm">
@@ -98,7 +103,7 @@ const ProductModal = () => {
                     <p className="line-clamp-5 text-sm">{product?.description}</p>
                   </div>
                   <div className="space-y-3 text-sm">
-                    <button className="button w-full bg-blue-600 text-white border-transparent hover:bg-transparent hover:border-blue-600 hover:text-black ">Add to bag</button>
+                    <button onClick={addToBag} className="button w-full bg-blue-600 text-white border-transparent hover:bg-transparent hover:border-blue-600 hover:text-black ">Add to bag</button>
                     <button onClick={() => window.location.reload()} className="button w-full bg-transparent border-blue-600 hover:text-white hover:bg-blue-600">View full details</button>
                   </div>
                 </div>
