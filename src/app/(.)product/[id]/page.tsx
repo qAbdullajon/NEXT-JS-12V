@@ -1,18 +1,18 @@
-'use client'
+"use client";
 
-import { ProductType } from "@/interface"
-import { Dialog } from "@headlessui/react"
-import { useEffect, useState } from "react"
-import { useParams, useRouter } from "next/navigation"
-import CustomImage from "@/components/image"
-import ReactStars from 'react-stars'
-import Notify from "@/components/toastify"
-import 'react-toastify/dist/ReactToastify.css';
+import { ProductType } from "@/interface";
+import { Dialog } from "@headlessui/react";
+import { useEffect, useState } from "react";
+import { useParams, useRouter } from "next/navigation";
+import CustomImage from "@/components/image";
+import ReactStars from "react-stars";
+import Notify from "@/components/toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 const ProductModal = () => {
+  const [isOpen, setIsOpen] = useState(true)
   const [loading, setLoading] = useState(false)
   const [product, setProduct] = useState<ProductType>()
-  const [isOpen, setIsOpen] = useState(true)
 
   const { id } = useParams()
   const router = useRouter()
@@ -22,7 +22,10 @@ const ProductModal = () => {
       setLoading(true)
       const res = await fetch(`https://fakestoreapi.com/products/${id}`)
       const product = await res.json()
-      setProduct(product)
+
+      const localStorageProducts: ProductType[] = JSON.parse(localStorage.getItem("carts") || "[]")
+      const isProduct = localStorageProducts.find(c => c.id === product.id)
+      setProduct(isProduct || product)
       setLoading(false)
     }
 
@@ -35,10 +38,6 @@ const ProductModal = () => {
     if (isExistProduct) {
       const updateProducts = products.map(c => {
         if (c.id === product?.id) {
-          console.log({
-            ...c, quantity: c.quantity + 1
-          });
-
           return {
             ...c, quantity: c.quantity + 1
           }
@@ -47,18 +46,51 @@ const ProductModal = () => {
       })
 
       localStorage.setItem('carts', JSON.stringify(updateProducts))
-    } else {
-      const data = [...products, { ...product, quantity: 1 }]
+    } else if (product?.id !== undefined) {
+      const newProduct = { ...product, quantity: 1 }
+      const data = [...products, newProduct]
+      setProduct(newProduct)
       localStorage.setItem("carts", JSON.stringify(data))
     }
-    Notify("Product added to your bag!!")
+    Notify("Product added to your bag!!", "success")
+  }
+
+  const handleIncrement = (id: number) => {
+    const products: ProductType[] = JSON.parse(localStorage.getItem('carts') || '[]')
+    const newProducts = products.map(c => {
+      if (c.id === id) {
+        return { ...c, quantity: c.quantity + 1 }
+      }
+      return c
+    })
+
+    localStorage.setItem("carts", JSON.stringify(newProducts))
+    setProduct({ ...product, quantity: (product?.quantity as number) + 1 } as ProductType)
+  }
+  const handleDectement = (id: number) => {
+    const products: ProductType[] = JSON.parse(localStorage.getItem('carts') || '[]')
+    const existProduct = products.find(c => c.id === id)
+    if (existProduct?.quantity === 1) {
+      const newProduct = products.filter(c => c.id !== id)
+      localStorage.setItem("carts", JSON.stringify(newProduct))
+      setProduct({ ...product, quantity: 0 } as ProductType)
+      Notify("Item removed from your bag!!", "info")
+    } else {
+      const newProducts = products.map(c => {
+        if (c.id === id) {
+          return { ...c, quantity: c.quantity - 1 }
+        }
+        return c
+      })
+      localStorage.setItem("carts", JSON.stringify(newProducts));
+      setProduct({ ...product, quantity: (product?.quantity as number) - 1 } as ProductType)
+    }
   }
 
   function onClose() {
     setIsOpen(false)
     router.back()
   }
-
   return (
     <Dialog
       open={isOpen}
@@ -66,7 +98,6 @@ const ProductModal = () => {
       className='relative z-50'
     >
       <div className='fixed inset-0 bg-black/30' aria-hidden='true' />
-
       <div className='fixed inset-0 overflow-y-auto'>
         <div className='flex min-h-full items-center justify-center p-4'>
           <Dialog.Panel
@@ -103,7 +134,22 @@ const ProductModal = () => {
                     <p className="line-clamp-5 text-sm">{product?.description}</p>
                   </div>
                   <div className="space-y-3 text-sm">
-                    <button onClick={addToBag} className="button w-full bg-blue-600 text-white border-transparent hover:bg-transparent hover:border-blue-600 hover:text-black ">Add to bag</button>
+                    {product?.quantity ? (
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center border-gray-100">
+                          <span onClick={() => handleDectement(product.id)} className="cursor-pointer rounded-l bg-gray-100 h-[41px] w-10 flex justify-center text-2xl items-center duration-100 hover:bg-blue-500 hover:text-blue-50"> - </span>
+                          <input className="h-[41px] w-10 border bg-white text-center text-xs outline-none" type="number" readOnly value={product?.quantity} min={product.quantity} />
+                          <span onClick={() => handleIncrement(product.id)} className="cursor-pointer rounded-r bg-gray-100 h-[41px] w-10 flex justify-center text-2xl items-center duration-100 hover:bg-blue-500 hover:text-blue-50"> + </span>
+                        </div>
+                        <button onClick={() => router.push('/shopping-cart')} className="button bg-blue-600 border text-white border-transparent hover:border-blue-600 hover:bg-transparent hover:text-black">
+                          My bag
+                        </button>
+                      </div>
+                    ) : (
+                      <button onClick={addToBag} className="button w-full bg-blue-600 text-white border-transparent hover:bg-transparent hover:border-blue-600 hover:text-black ">
+                        Add to bag
+                      </button>
+                    )}
                     <button onClick={() => window.location.reload()} className="button w-full bg-transparent border-blue-600 hover:text-white hover:bg-blue-600">View full details</button>
                   </div>
                 </div>
