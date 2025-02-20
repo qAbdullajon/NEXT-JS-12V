@@ -9,7 +9,7 @@ const Navbar = () => {
   return (
     <header className="flex justify-between px-4 md:px-12 py-2 items-center fixed top-0 bg-white w-full z-50 shadow">
       <Link href={'/'} className="flex gap-3 items-center">
-        <Image src="/logo.jpg" alt="Logo" height={'50'} width={'50'} priority />
+        <Image src="/logo.jpg" alt="Logo" height={'50'} width={'50'} style={{ width: "auto", height: "auto" }} priority />
         <p className="text-4xl font-bold text-black">Button</p>
       </Link>
       <div className="flex items-center gap-2.5 text-sm">
